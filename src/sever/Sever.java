@@ -19,16 +19,15 @@ import robotcontrollers.MotorControllers;
 public class Sever {
 
     public static void main(String[] args) throws IOException {
-        MotorControllers ms = new MotorControllers(-1);
-        String motorData="";
+        //MotorControllers ms = new MotorControllers(-1);
+        String motorData="Hi";
         ServerSocket listener = new ServerSocket(9090);
         while (true) {
-            motorData=ms.getMotorData();
+            //motorData=ms.getMotorData();
             Socket socket = listener.accept();
             PrintWriter out
                     = new PrintWriter(socket.getOutputStream(), true);
             out.println(motorData);
         }
     }
-
 }
