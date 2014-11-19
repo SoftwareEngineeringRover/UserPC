@@ -21,27 +21,13 @@ public class ArmControllers extends RobotControllers {
 
     public ArmControllers(int avoidIndex) {
         super(avoidIndex);
-        super.searchForControllers();
-        if (isEmpty()) {
-            System.out.println(type + " joystick connected!");
-        } else {
-            System.out.println("Unable to find extra joystick for " + type + " controller");
-        }
-    }
-
-    @Override
-    public void getData() {
-        super.getData();
-        jointSwitch();
-        crow=buttons[0];
-        getMovement();
-        if (rotation) {
-            getRotation();
-        }
-        System.out.println(target+": move " + Movement + ", rotate " + Rotation+" close:"+crow);     
     }
     
-    public String getArmData(){
+    public boolean setArmControllers(){
+        return super.searchForControllers();
+    }
+    
+    public String getArmData()throws NullPointerException{
         super.getData();
         jointSwitch();
         crow=buttons[0];

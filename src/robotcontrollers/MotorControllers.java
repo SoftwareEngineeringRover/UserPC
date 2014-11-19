@@ -18,15 +18,13 @@ public class MotorControllers extends RobotControllers{
     
     public MotorControllers(int avoidIndex) {
         super(avoidIndex);
-        super.searchForControllers();
-        if(isEmpty()){
-            System.out.println(type + " joystick connected!");
-        }else{
-            System.out.println("Unable to find extra joystick for "+type+" controller");
-        }
     }
     
-    public String getMotorData(){
+    public boolean setMotorControllers(){
+        return super.searchForControllers();
+    }
+    
+    public String getMotorData() throws NullPointerException{
         super.getData();
         getSpeed();
         getRotation();

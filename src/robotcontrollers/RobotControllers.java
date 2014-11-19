@@ -41,7 +41,7 @@ public class RobotControllers {
     }
 
     //search controller
-    protected void searchForControllers() {
+    protected boolean searchForControllers() {
         //collect ports infor
         Controller[] controllers = ControllerEnvironment.getDefaultEnvironment().getControllers();
         for (int i = 0; i < controllers.length && joystickIndex == -1; i++) {
@@ -51,6 +51,7 @@ public class RobotControllers {
                 joystickIndex = i;//assign index
             }
         }
+        return isEmpty();
     }
     
     public void setAvoidIndex(int index) {
@@ -68,7 +69,7 @@ public class RobotControllers {
     }
 
     //get input from joystick
-    public void getData() {
+    public void getData() throws NullPointerException{
         joystick.poll();
         Component[] components = joystick.getComponents();
         for (int i = 0; i < components.length; i++) {

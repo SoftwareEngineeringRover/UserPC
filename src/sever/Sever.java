@@ -11,7 +11,6 @@ import java.net.ServerSocket;
 import java.net.Socket;
 import robotcontrollers.MotorControllers;
 
-
 /**
  *
  * @author junxin
@@ -20,14 +19,20 @@ public class Sever {
 
     public static void main(String[] args) throws IOException {
         //MotorControllers ms = new MotorControllers(-1);
-        String motorData="Hi";
+        int motorData = 1;
         ServerSocket listener = new ServerSocket(9090);
+        Socket socket = null;
+        boolean done = false;
+        while (!done) {
+            socket = listener.accept();
+            done = true;
+        }
+        PrintWriter out;
         while (true) {
             //motorData=ms.getMotorData();
-            Socket socket = listener.accept();
-            PrintWriter out
-                    = new PrintWriter(socket.getOutputStream(), true);
+            out = new PrintWriter(socket.getOutputStream(), true);
             out.println(motorData);
+            motorData++;
         }
     }
 }
