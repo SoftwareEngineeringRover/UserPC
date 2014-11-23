@@ -25,23 +25,13 @@ public class RobotControllers {
     float zRotation;   //right stick rotate
     float zAxis;       //left handle front -1, normal approxial 0, back 1
 
-//    public static void main(String[] args) {
-//        MotorControllers ms = new MotorControllers(-1);
-//        //ArmControllers as = new ArmControllers(ms.getIndex());
-//        //ArmControllers as = new ArmControllers(-1);
-//        //while(!ms.isEmpty()&&!as.isEmpty()){
-//        while (true) {
-//            System.out.println(ms.getMotorData());
-//        }
-//    }
-
     public RobotControllers(int avoidIndex) {
         this.avoidIndex = avoidIndex;
         buttons = new boolean[13];
     }
 
     //search controller
-    protected boolean searchForControllers() {
+    public boolean searchForControllers() {
         //collect ports infor
         Controller[] controllers = ControllerEnvironment.getDefaultEnvironment().getControllers();
         for (int i = 0; i < controllers.length && joystickIndex == -1; i++) {
