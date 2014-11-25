@@ -8,7 +8,7 @@ import java.awt.event.*;
  *
  * @author Matt
  */
-public class RoverGUI {
+public class RoverGUI extends javax.swing.JFrame{
 
     private JFrame f; //The window
     private JPanel p; //Stuff inside the window(Its a div essentially)
