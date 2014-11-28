@@ -18,17 +18,6 @@ public class ArmControllers extends RobotControllers {
     boolean rotation = true;
     String Movement = "stop"; //future: 0 for stop 1 for forward 2 for backward
     String Rotation = "stop"; //future: 0 for stop 1 for left, 2 for right
-    
-    public static void main(String[] args) {
-        ArmControllers as = new ArmControllers(-1);
-        if (as.searchForControllers()) {
-            while (true) {
-                System.out.println(as.getArmData());
-            }
-        }else{
-            System.out.println("Unable to connect joystick, make sure there has joy stick available");
-        }
-    }
 
     public ArmControllers(int avoidIndex) {
         super(avoidIndex);

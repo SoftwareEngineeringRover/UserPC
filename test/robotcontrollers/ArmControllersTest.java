@@ -16,40 +16,36 @@ import static org.junit.Assert.*;
  *
  * @author junxin
  */
-public class MotorControllersTest {
-
-    public MotorControllersTest() {
+public class ArmControllersTest {
+    
+    public ArmControllersTest() {
     }
-
+    
     @BeforeClass
     public static void setUpClass() {
     }
-
+    
     @AfterClass
     public static void tearDownClass() {
     }
-
+    
     @Before
     public void setUp() {
     }
-
+    
     @After
     public void tearDown() {
     }
 
-    /**
-     * Test of getMotorData method, of class MotorControllers.
-     */
-    @Test
+     @Test
     public void testGetMotorData() {
-        MotorControllers mc = new MotorControllers(-1);
-        if (mc.searchForControllers()) {
-            String expectedOutput = "0 0 45";
-            String actualOutput = mc.getMotorData();
+        ArmControllers ac = new ArmControllers(-1);
+        if (ac.searchForControllers()) {
+            String expectedOutput = "1 shoulder stop stop false";
+            String actualOutput = ac.getArmData();
             assertEquals(expectedOutput, actualOutput);
             
             //assertTrue(1==1);
         }
     }
-
 }

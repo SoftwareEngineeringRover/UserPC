@@ -16,17 +16,6 @@ public class MotorControllers extends RobotControllers {
     int degree;
     int maxSpeed = -200;
 
-    public static void main(String[] args) {
-        MotorControllers ms = new MotorControllers(-1);
-        if (ms.searchForControllers()) {
-            while (true) {
-                System.out.println(ms.getMotorData());
-            }
-        }else{
-            System.out.println("Unable to connect joystick, make sure there has joy stick available");
-        }
-    }
-
     public MotorControllers(int avoidIndex) {
         super(avoidIndex);
     }
