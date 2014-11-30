@@ -14,6 +14,9 @@ public class RoverGUI {
     private JPanel p; //Stuff inside the window(Its a div essentially)
     private JPanel pCameras;
     private JPanel pPanCamera;
+    private JPanel buttonsLeft;
+    private JPanel buttonsRight;
+    
     
     private JLabel camera1;
     private JLabel camera2;
@@ -45,12 +48,19 @@ public class RoverGUI {
         
         f = new JFrame("Rover");
         f.setVisible(true);
-        f.setSize(600, 400);
+        f.setSize(1000, 600);
         f.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE); //allows you to close the GUI.
         
         p = new JPanel(new GridBagLayout());
         pCameras = new JPanel(new GridBagLayout());
         pPanCamera = new JPanel(new GridBagLayout());
+        
+        buttonsLeft = new JPanel();
+        BoxLayout vertButtonsLeft = new BoxLayout(buttonsLeft,BoxLayout.Y_AXIS);
+        buttonsLeft.setLayout(vertButtonsLeft);
+        buttonsRight = new JPanel();
+        BoxLayout vertButtonsRight = new BoxLayout(buttonsRight,BoxLayout.Y_AXIS);
+        buttonsRight.setLayout(vertButtonsRight);
         
         GridBagConstraints c = new GridBagConstraints();//GridBagConstraint is a specific way of arranging the objects in java.
         c.fill = GridBagConstraints.HORIZONTAL;
@@ -69,7 +79,28 @@ public class RoverGUI {
         camera2.setOpaque(true);
         systemData = new JLabel("System Information..."); //Change the string here for system information.
         
-       
+        
+        buttonsLeft.add(Box.createVerticalStrut(5));
+        buttonsRight.add(Box.createVerticalStrut(5));
+        int boxStrutSize = 35;
+        for(int i=0;i<16;i++)
+        {
+        	String buttonString = "Camera "+ ((i % 8) + 1);
+        	JButton aButton = new JButton(buttonString);
+        	if(i<8)
+        	{
+        	 buttonsLeft.add(aButton);
+        	 buttonsLeft.add(Box.createVerticalStrut(boxStrutSize));
+        	}
+        	else
+        	{
+        	 buttonsRight.add(aButton);
+        	 buttonsRight.add(Box.createVerticalStrut(boxStrutSize));
+        	}
+        }
+        
+        
+        
         connect.addActionListener(new ActionListener() {
             
             public void actionPerformed(ActionEvent e) {
@@ -102,7 +133,7 @@ public class RoverGUI {
             }
         });
         
-
+        
                 
         //Add button & label to panel; add panel to frame.
         c.insets = new Insets(10,10,10,10);//makes buttons have margins(top, left, right, bottom)
