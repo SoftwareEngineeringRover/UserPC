@@ -1,5 +1,5 @@
 
-package rover.gui;
+package userpc;
 import javax.swing.JOptionPane;
 import javax.swing.*;
 import java.awt.*;
@@ -8,7 +8,7 @@ import java.awt.event.*;
  *
  * @author Matt
  */
-public class RoverGUI {
+public class RoverGUI_Matt {
 
     private JFrame f; //The window
     private JPanel p; //Stuff inside the window(Its a div essentially)
@@ -28,7 +28,7 @@ public class RoverGUI {
     
     String connected = "Inactive";
     
-    public RoverGUI() {
+    public RoverGUI_Matt() {
         gui();
     }
     
@@ -37,7 +37,7 @@ public class RoverGUI {
      */
     public static void main(String[] args) {
         
-        new RoverGUI();
+        new RoverGUI_Matt();
     }
     
     public void gui() {
