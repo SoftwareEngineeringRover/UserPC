@@ -188,7 +188,7 @@ public class RoverGUI extends javax.swing.JFrame {
 
         getContentPane().add(jScrollPane1, new org.netbeans.lib.awtextra.AbsoluteConstraints(150, 616, 1000, 90));
 
-        jLabel3.setIcon(new javax.swing.ImageIcon("C:\\Users\\Eddy\\Pictures\\GUI\\RoverBackground5.png")); // NOI18N
+        jLabel3.setIcon(new javax.swing.ImageIcon(getClass().getResource("/userpc/RoverBackground5.png"))); // NOI18N
         getContentPane().add(jLabel3, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 1290, 730));
 
         pack();
