@@ -4,6 +4,11 @@
  */
 package userpc;
 
+import communication.Client;
+import java.awt.Container;
+import java.io.IOException;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.swing.JOptionPane;
 
 /**
@@ -46,8 +51,9 @@ public class RoverGUI extends javax.swing.JFrame {
         jButton9 = new javax.swing.JButton();
         jButton15 = new javax.swing.JButton();
         jButton16 = new javax.swing.JButton();
-        GuessField = new javax.swing.JTextField();
         GuessButton = new javax.swing.JButton();
+        jScrollPane1 = new javax.swing.JScrollPane();
+        jTextArea1 = new javax.swing.JTextArea();
         jLabel3 = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
@@ -164,15 +170,6 @@ public class RoverGUI extends javax.swing.JFrame {
         jButton16.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
         getContentPane().add(jButton16, new org.netbeans.lib.awtextra.AbsoluteConstraints(1180, 454, 90, 30));
 
-        GuessField.setBackground(new java.awt.Color(247, 253, 244));
-        GuessField.setCursor(new java.awt.Cursor(java.awt.Cursor.TEXT_CURSOR));
-        GuessField.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                GuessFieldActionPerformed(evt);
-            }
-        });
-        getContentPane().add(GuessField, new org.netbeans.lib.awtextra.AbsoluteConstraints(147, 617, 1000, 90));
-
         GuessButton.setFont(new java.awt.Font("Calibri", 0, 24)); // NOI18N
         GuessButton.setText("Connect");
         GuessButton.setContentAreaFilled(false);
@@ -184,33 +181,35 @@ public class RoverGUI extends javax.swing.JFrame {
         });
         getContentPane().add(GuessButton, new org.netbeans.lib.awtextra.AbsoluteConstraints(1120, 10, 160, 50));
 
+        jTextArea1.setBackground(new java.awt.Color(247, 253, 244));
+        jTextArea1.setColumns(20);
+        jTextArea1.setRows(5);
+        jScrollPane1.setViewportView(jTextArea1);
+
+        getContentPane().add(jScrollPane1, new org.netbeans.lib.awtextra.AbsoluteConstraints(150, 616, 1000, 90));
+
         jLabel3.setIcon(new javax.swing.ImageIcon("C:\\Users\\Eddy\\Pictures\\GUI\\RoverBackground5.png")); // NOI18N
         getContentPane().add(jLabel3, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 1290, 730));
 
         pack();
-        java.awt.Dimension screenSize = java.awt.Toolkit.getDefaultToolkit().getScreenSize();
-        java.awt.Dimension dialogSize = getSize();
-        setLocation((screenSize.width-dialogSize.width)/2,(screenSize.height-dialogSize.height)/2);
+        setLocationRelativeTo(null);
     }// </editor-fold>//GEN-END:initComponents
 
     private void GuessButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_GuessButtonActionPerformed
-        if (GuessField.getText().equalsIgnoreCase("what"))
-        {
+
             JOptionPane.showMessageDialog(null, "Super Duper!");
-        }
-        else
-        {
-            JOptionPane.showMessageDialog(null, "Guess again newb");
-        }
+            String[] args = null;
+            jTextArea1.setText("Meow");
+            try {
+                Client.main(args);
+            } catch (IOException ex) {
+                Logger.getLogger(RoverGUI.class.getName()).log(Level.SEVERE, null, ex);
+            }
     }//GEN-LAST:event_GuessButtonActionPerformed
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_jButton1ActionPerformed
-
-    private void GuessFieldActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_GuessFieldActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_GuessFieldActionPerformed
 
     /**
      * @param args the command line arguments
@@ -238,6 +237,7 @@ public class RoverGUI extends javax.swing.JFrame {
             java.util.logging.Logger.getLogger(RoverGUI.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         }
         //</editor-fold>
+        //</editor-fold>
 
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
@@ -248,7 +248,6 @@ public class RoverGUI extends javax.swing.JFrame {
     }
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton GuessButton;
-    private javax.swing.JTextField GuessField;
     private javax.swing.JButton jButton1;
     private javax.swing.JButton jButton10;
     private javax.swing.JButton jButton11;
@@ -268,5 +267,7 @@ public class RoverGUI extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel3;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel2;
+    private javax.swing.JScrollPane jScrollPane1;
+    private javax.swing.JTextArea jTextArea1;
     // End of variables declaration//GEN-END:variables
 }

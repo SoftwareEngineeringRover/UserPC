@@ -1,5 +1,5 @@
 
-package rover.gui;
+package userpc;
 import javax.swing.JOptionPane;
 import javax.swing.*;
 import java.awt.*;
@@ -14,7 +14,7 @@ import javax.swing.JPanel;
  *
  * @author Matt Ng
  */
-public class RoverGUI implements KeyListener{
+public class RoverGUI_Mattv2 implements KeyListener{
 
     int selected = 1; //which camera is currently selected.
     
@@ -44,7 +44,7 @@ public class RoverGUI implements KeyListener{
     
     String connected = "Inactive";
     
-    public RoverGUI() {
+    public RoverGUI_Mattv2() {
         
         gui();
     }
