@@ -5,17 +5,21 @@
 package userpc;
 
 import communication.Client;
-import java.awt.Container;
-import java.io.IOException;
-import java.util.logging.Level;
-import java.util.logging.Logger;
-import javax.swing.JOptionPane;
+import communication.Server;
+import java.awt.event.WindowEvent;
+import robotcontrollers.ArmControllers;
+import robotcontrollers.MotorControllers;
 
 /**
  *
  * @author Eddy
  */
 public class RoverGUI extends javax.swing.JFrame {
+
+    MotorControllers mc;
+    ArmControllers ac;
+    Thread server;
+    Client client;
 
     /**
      * Creates new form RoverGUI
@@ -197,14 +201,29 @@ public class RoverGUI extends javax.swing.JFrame {
 
     private void GuessButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_GuessButtonActionPerformed
 
-            JOptionPane.showMessageDialog(null, "Super Duper!");
-            String[] args = null;
-            jTextArea1.setText("Meow");
-            try {
-                Client.main(args);
-            } catch (IOException ex) {
-                Logger.getLogger(RoverGUI.class.getName()).log(Level.SEVERE, null, ex);
+        if (server != null) {
+            server.stop();
+            GuessButton.setText("Connnect");
+            display("Server Disconnect!");
+            return;
+        }
+        mc = new MotorControllers(-1);
+        if (mc.searchForControllers()) {
+            display("Motor Controller Connected!");
+            ac = new ArmControllers(-1);//future: ac=new ArmControllers(mc.getIndex());
+            if (ac.searchForControllers()) {
+                display("Arm Controller Connected!");
+                server = new Thread(new Server(this, mc, ac));
+                server.start();
+                display("Server start...");
+                display("Wait for client...");
+                GuessButton.setText("Disconnect");
+            } else {
+                display("Not Extra Joystick For Arm Controller!");
             }
+        } else {
+            display("Not Extra Joystick For Motor Controller!");
+        }
     }//GEN-LAST:event_GuessButtonActionPerformed
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
@@ -245,7 +264,13 @@ public class RoverGUI extends javax.swing.JFrame {
                 new RoverGUI().setVisible(true);
             }
         });
+
     }
+
+    public void display(String message) {
+        jTextArea1.append(message + "\n");
+    }
+
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton GuessButton;
     private javax.swing.JButton jButton1;
