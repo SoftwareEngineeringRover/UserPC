@@ -5,9 +5,17 @@
 package userpc;
 
 import communication.Server;
-import java.awt.event.WindowEvent;
 import robotcontrollers.ArmControllers;
 import robotcontrollers.MotorControllers;
+
+import com.github.sarxos.webcam.*;
+import java.awt.image.BufferedImage;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+
+import java.awt.*;
+import java.util.List;
+import javax.swing.ImageIcon;
 
 /**
  *
@@ -22,8 +30,29 @@ public class RoverGUI extends javax.swing.JFrame {
     /**
      * Creates new form RoverGUI
      */
+    Webcam webcam;
+    WebcamPanel webcamPanelLeft;
+    boolean camFlag = false;
+
     public RoverGUI() {
         initComponents();
+    }
+
+    class takeIamges extends Thread {
+
+        @Override
+        public void run() {
+            while (true) {
+                try {
+                    BufferedImage img = webcam.getImage();
+                    ImageIcon icon = new ImageIcon(img);
+                    jLabel1.setIcon(icon);
+                    Thread.sleep(50);
+                } catch (InterruptedException ex) {
+                    Logger.getLogger(RoverGUI.class.getName()).log(Level.SEVERE, null, ex);
+                }
+            }
+        }
     }
 
     /**
@@ -35,8 +64,6 @@ public class RoverGUI extends javax.swing.JFrame {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
-        jPanel1 = new javax.swing.JPanel();
-        jPanel2 = new javax.swing.JPanel();
         jButton1 = new javax.swing.JButton();
         jButton2 = new javax.swing.JButton();
         jButton3 = new javax.swing.JButton();
@@ -54,6 +81,7 @@ public class RoverGUI extends javax.swing.JFrame {
         jButton15 = new javax.swing.JButton();
         jButton16 = new javax.swing.JButton();
         GuessButton = new javax.swing.JButton();
+        jLabel1 = new javax.swing.JLabel();
         jScrollPane1 = new javax.swing.JScrollPane();
         jTextArea1 = new javax.swing.JTextArea();
         jLabel3 = new javax.swing.JLabel();
@@ -62,12 +90,6 @@ public class RoverGUI extends javax.swing.JFrame {
         setTitle("Command PC");
         setResizable(false);
         getContentPane().setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
-
-        jPanel1.setBackground(new java.awt.Color(102, 102, 102));
-        getContentPane().add(jPanel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(140, 90, 490, 490));
-
-        jPanel2.setBackground(new java.awt.Color(102, 102, 102));
-        getContentPane().add(jPanel2, new org.netbeans.lib.awtextra.AbsoluteConstraints(670, 90, 480, 490));
 
         jButton1.setFont(new java.awt.Font("Calibri", 0, 11)); // NOI18N
         jButton1.setText("Front");
@@ -182,6 +204,7 @@ public class RoverGUI extends javax.swing.JFrame {
             }
         });
         getContentPane().add(GuessButton, new org.netbeans.lib.awtextra.AbsoluteConstraints(1120, 10, 160, 50));
+        getContentPane().add(jLabel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(664, 84, 490, 490));
 
         jTextArea1.setBackground(new java.awt.Color(247, 253, 244));
         jTextArea1.setColumns(20);
@@ -198,29 +221,12 @@ public class RoverGUI extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void GuessButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_GuessButtonActionPerformed
-
-        if (server != null) {
-            server.stop();
-            GuessButton.setText("Connnect");
-            display("Server Disconnect!");
-            return;
-        }
-        mc = new MotorControllers(-1);
-        if (mc.searchForControllers()) {
-            display("Motor Controller Connected!");
-            ac = new ArmControllers(-1);//future: ac=new ArmControllers(mc.getIndex());
-            if (ac.searchForControllers()) {
-                display("Arm Controller Connected!");
-                server = new Thread(new Server(this, mc, ac));
-                server.start();
-                display("Server start...");
-                display("Wait for client...");
-                GuessButton.setText("Disconnect");
-            } else {
-                display("Not Extra Joystick For Arm Controller!");
-            }
+        if (camFlag == false) {
+            startControllersAndServer();
+            displayImage();
         } else {
-            display("Not Extra Joystick For Motor Controller!");
+            stopControllersAndServer();
+            closeDisplayImage();
         }
     }//GEN-LAST:event_GuessButtonActionPerformed
 
@@ -269,6 +275,57 @@ public class RoverGUI extends javax.swing.JFrame {
         jTextArea1.append(message + "\n");
     }
 
+    private void displayImage() {
+        try {
+            List<Webcam> camList = Webcam.getWebcams();
+            display(camList.size() + "");
+            webcam = camList.get(0);
+            webcamPanelLeft = new WebcamPanel(webcam, new Dimension(480, 490), false);
+            webcam.setViewSize(WebcamResolution.VGA.getSize());
+
+            webcamPanelLeft.setFillArea(false);
+            getContentPane().add(webcamPanelLeft, new org.netbeans.lib.awtextra.AbsoluteConstraints(141, 93, 480, 480));
+            webcam.open();
+            new takeIamges().start();
+            display("Camera activated!");
+            camFlag = true;
+        } catch (Exception e) {
+            display("Unable to display stream");
+        }
+    }
+
+    private void closeDisplayImage() {
+        webcam.close();
+        display("Camera deactivated");
+        camFlag = false;
+    }
+
+    private void stopControllersAndServer() {
+        server.stop();
+        GuessButton.setText("Connnect");
+        display("Server Disconnect!");
+    }
+    
+    private void startControllersAndServer() {
+        mc = new MotorControllers(-1);
+        if (mc.searchForControllers()) {
+            display("Motor Controller Connected!");
+            ac = new ArmControllers(-1);//future: ac=new ArmControllers(mc.getIndex());
+            if (ac.searchForControllers()) {
+                display("Arm Controller Connected!");
+                server = new Thread(new Server(this, mc, ac));
+                server.start();
+                display("Server start...");
+                display("Wait for client...");
+                GuessButton.setText("Disconnect");
+            } else {
+                display("Not Extra Joystick For Arm Controller!");
+            }
+        } else {
+            display("Not Extra Joystick For Motor Controller!");
+        }
+    }
+
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton GuessButton;
     private javax.swing.JButton jButton1;
@@ -287,9 +344,8 @@ public class RoverGUI extends javax.swing.JFrame {
     private javax.swing.JButton jButton7;
     private javax.swing.JButton jButton8;
     private javax.swing.JButton jButton9;
+    private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel3;
-    private javax.swing.JPanel jPanel1;
-    private javax.swing.JPanel jPanel2;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JTextArea jTextArea1;
     // End of variables declaration//GEN-END:variables
