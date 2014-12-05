@@ -30,8 +30,9 @@ public class RoverGUI extends javax.swing.JFrame {
     /**
      * Creates new form RoverGUI
      */
-    Webcam webcam;
-    WebcamPanel webcamPanelLeft;
+    //Webcam webcam; //rover
+    //Webcam webcam2; //rover
+  
     boolean camFlag = false;
 
     public RoverGUI() {
@@ -42,16 +43,19 @@ public class RoverGUI extends javax.swing.JFrame {
 
         @Override
         public void run() {
-            while (true) {
-                try {
-                    BufferedImage img = webcam.getImage();
-                    ImageIcon icon = new ImageIcon(img);
-                    jLabel1.setIcon(icon);
-                    Thread.sleep(50);
-                } catch (InterruptedException ex) {
-                    Logger.getLogger(RoverGUI.class.getName()).log(Level.SEVERE, null, ex);
-                }
-            }
+//            while (true) {
+//                try {
+//                    //needs to receive new image constantly
+//                    //Client.getImage or something
+//                    ImageIcon icon = new ImageIcon(img);  //img needed from communications
+//                    ImageIcon icon2 = new ImageIcon(img2);
+//                    jLabel1.setIcon(icon);
+//                    jLabel2.setIcon(icon2);
+//                    Thread.sleep(50);
+//                } catch (InterruptedException ex) {
+//                    Logger.getLogger(RoverGUI.class.getName()).log(Level.SEVERE, null, ex);
+//                }
+//            }
         }
     }
 
@@ -82,6 +86,7 @@ public class RoverGUI extends javax.swing.JFrame {
         jButton16 = new javax.swing.JButton();
         GuessButton = new javax.swing.JButton();
         jLabel1 = new javax.swing.JLabel();
+        jLabel2 = new javax.swing.JLabel();
         jScrollPane1 = new javax.swing.JScrollPane();
         jTextArea1 = new javax.swing.JTextArea();
         jLabel3 = new javax.swing.JLabel();
@@ -204,7 +209,8 @@ public class RoverGUI extends javax.swing.JFrame {
             }
         });
         getContentPane().add(GuessButton, new org.netbeans.lib.awtextra.AbsoluteConstraints(1120, 10, 160, 50));
-        getContentPane().add(jLabel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(664, 84, 490, 490));
+        getContentPane().add(jLabel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(140, 90, 490, 490));
+        getContentPane().add(jLabel2, new org.netbeans.lib.awtextra.AbsoluteConstraints(670, 90, 480, 490));
 
         jTextArea1.setBackground(new java.awt.Color(247, 253, 244));
         jTextArea1.setColumns(20);
@@ -224,9 +230,11 @@ public class RoverGUI extends javax.swing.JFrame {
         if (camFlag == false) {
             startControllersAndServer();
             displayImage();
+            camFlag = true;
         } else {
             stopControllersAndServer();
             closeDisplayImage();
+            camFlag = false;
         }
     }//GEN-LAST:event_GuessButtonActionPerformed
 
@@ -277,15 +285,15 @@ public class RoverGUI extends javax.swing.JFrame {
 
     private void displayImage() {
         try {
-            List<Webcam> camList = Webcam.getWebcams();
-            display(camList.size() + "");
-            webcam = camList.get(0);
-            webcamPanelLeft = new WebcamPanel(webcam, new Dimension(480, 490), false);
-            webcam.setViewSize(WebcamResolution.VGA.getSize());
+            //List<Webcam> camList = Webcam.getWebcams(); //rover
+            //display(camList.size() + "");
+            //webcam = camList.get(0); //rover
+            //webcam2 = camList.get(1); //rover
+            //webcam.setViewSize(WebcamResolution.VGA.getSize());
+            //webcam2.setViewSize(WebcamResolution.VGA.getSize()); 
 
-            webcamPanelLeft.setFillArea(false);
-            getContentPane().add(webcamPanelLeft, new org.netbeans.lib.awtextra.AbsoluteConstraints(141, 93, 480, 480));
-            webcam.open();
+            //webcam.open(); //rover
+            //webcam2.open(); //rover
             new takeIamges().start();
             display("Camera activated!");
             camFlag = true;
@@ -295,7 +303,8 @@ public class RoverGUI extends javax.swing.JFrame {
     }
 
     private void closeDisplayImage() {
-        webcam.close();
+        //webcam.close();
+        //webcam2.close();
         display("Camera deactivated");
         camFlag = false;
     }
@@ -345,6 +354,7 @@ public class RoverGUI extends javax.swing.JFrame {
     private javax.swing.JButton jButton8;
     private javax.swing.JButton jButton9;
     private javax.swing.JLabel jLabel1;
+    private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JTextArea jTextArea1;
