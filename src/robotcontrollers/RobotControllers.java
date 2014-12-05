@@ -8,6 +8,7 @@ package robotcontrollers;
 import net.java.games.input.Component;
 import net.java.games.input.Controller;
 import net.java.games.input.ControllerEnvironment;
+import net.java.games.input.*;
 
 /**
  *
@@ -16,6 +17,7 @@ import net.java.games.input.ControllerEnvironment;
 public class RobotControllers {
 
     Controller joystick;
+    Controller[] controllers;
     int joystickIndex = -1;
     int avoidIndex = -1;
     boolean[] buttons;  //0-11 buttons 12 hat switch 
@@ -33,7 +35,9 @@ public class RobotControllers {
     //search controller
     public boolean searchForControllers() {
         //collect ports infor
-        Controller[] controllers = ControllerEnvironment.getDefaultEnvironment().getControllers();
+        controllers = null;
+        controllers=ControllerEnvironment.getDefaultEnvironment().getControllers();
+                
         for (int i = 0; i < controllers.length && joystickIndex == -1; i++) {
             //check any port has joystick
             if (controllers[i].getType() == Controller.Type.STICK && i != avoidIndex) {

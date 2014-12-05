@@ -4,7 +4,6 @@
  */
 package userpc;
 
-import communication.Client;
 import communication.Server;
 import java.awt.event.WindowEvent;
 import robotcontrollers.ArmControllers;
@@ -19,7 +18,6 @@ public class RoverGUI extends javax.swing.JFrame {
     MotorControllers mc;
     ArmControllers ac;
     Thread server;
-    Client client;
 
     /**
      * Creates new form RoverGUI
