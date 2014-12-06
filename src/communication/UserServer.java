@@ -20,7 +20,7 @@ import userpc.RoverGUI;
  *
  * @author junxin
  */
-public class Server implements Runnable {
+public class UserServer implements Runnable {
 
     RoverGUI gui;
     MotorControllers mc;
@@ -29,7 +29,7 @@ public class Server implements Runnable {
     ServerSocket listener = null;
     private PrintWriter out;
 
-    public Server(RoverGUI gui, MotorControllers mc, ArmControllers ac) {
+    public UserServer(RoverGUI gui, MotorControllers mc, ArmControllers ac) {
         this.gui = gui;
         this.mc = mc;
         this.ac = ac;
@@ -54,7 +54,7 @@ public class Server implements Runnable {
         } catch (IOException ex) {
             gui.display("Unable to accept client!");
         } catch (InterruptedException ex) {
-            Logger.getLogger(Server.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(UserServer.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
 }

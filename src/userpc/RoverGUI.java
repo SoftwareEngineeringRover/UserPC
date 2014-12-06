@@ -4,16 +4,18 @@
  */
 package userpc;
 
-import communication.Server;
+import communication.UserServer;
 import robotcontrollers.ArmControllers;
 import robotcontrollers.MotorControllers;
 
 import com.github.sarxos.webcam.*;
+import communication.UserClient;
 import java.awt.image.BufferedImage;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import java.awt.*;
+import java.io.IOException;
 import java.util.List;
 import javax.swing.ImageIcon;
 
@@ -26,23 +28,23 @@ public class RoverGUI extends javax.swing.JFrame {
     MotorControllers mc;
     ArmControllers ac;
     Thread server;
+    Thread client;
 
     /**
      * Creates new form RoverGUI
      */
     //Webcam webcam; //rover
     //Webcam webcam2; //rover
-  
     boolean camFlag = false;
 
     public RoverGUI() {
         initComponents();
     }
 
-    class takeIamges extends Thread {
-
-        @Override
-        public void run() {
+//    class takeIamges extends Thread {
+//
+//        @Override
+//        public void run() {
 //            while (true) {
 //                try {
 //                    //needs to receive new image constantly
@@ -56,7 +58,13 @@ public class RoverGUI extends javax.swing.JFrame {
 //                    Logger.getLogger(RoverGUI.class.getName()).log(Level.SEVERE, null, ex);
 //                }
 //            }
-        }
+//        }
+//    }
+    public void setIcons(BufferedImage img1, BufferedImage img2) {
+        ImageIcon icon = new ImageIcon(img1);
+        ImageIcon icon2 = new ImageIcon(img2);
+        jLabel1.setIcon(icon);
+        jLabel2.setIcon(icon2);
     }
 
     /**
@@ -229,11 +237,12 @@ public class RoverGUI extends javax.swing.JFrame {
     private void GuessButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_GuessButtonActionPerformed
         if (camFlag == false) {
             startControllersAndServer();
-            displayImage();
+            connectRoverServer();
+           // displayImage();
             camFlag = true;
         } else {
             stopControllersAndServer();
-            closeDisplayImage();
+            //closeDisplayImage();
             camFlag = false;
         }
     }//GEN-LAST:event_GuessButtonActionPerformed
@@ -283,6 +292,15 @@ public class RoverGUI extends javax.swing.JFrame {
         jTextArea1.append(message + "\n");
     }
 
+    private void connectRoverServer() {
+        try {
+            client = new UserClient(this, "150.250.218.107");
+            client.start();
+        } catch (IOException ex) {
+            Logger.getLogger(RoverGUI.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
+
     private void displayImage() {
         try {
             //List<Webcam> camList = Webcam.getWebcams(); //rover
@@ -294,7 +312,7 @@ public class RoverGUI extends javax.swing.JFrame {
 
             //webcam.open(); //rover
             //webcam2.open(); //rover
-            new takeIamges().start();
+            //new takeIamges().start();
             display("Camera activated!");
             camFlag = true;
         } catch (Exception e) {
@@ -314,7 +332,7 @@ public class RoverGUI extends javax.swing.JFrame {
         GuessButton.setText("Connnect");
         display("Server Disconnect!");
     }
-    
+
     private void startControllersAndServer() {
         mc = new MotorControllers(-1);
         if (mc.searchForControllers()) {
@@ -322,7 +340,7 @@ public class RoverGUI extends javax.swing.JFrame {
             ac = new ArmControllers(-1);//future: ac=new ArmControllers(mc.getIndex());
             if (ac.searchForControllers()) {
                 display("Arm Controller Connected!");
-                server = new Thread(new Server(this, mc, ac));
+                server = new Thread(new UserServer(this, mc, ac));
                 server.start();
                 display("Server start...");
                 display("Wait for client...");
