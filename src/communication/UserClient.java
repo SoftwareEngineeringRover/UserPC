@@ -15,6 +15,7 @@ import java.net.Socket;
 import java.net.UnknownHostException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.imageio.ImageIO;
 
 import javax.swing.JOptionPane;
 import userpc.RoverGUI;
@@ -26,7 +27,7 @@ import userpc.RoverGUI;
  */
 public class UserClient extends Thread{
 
-    ObjectInputStream input;
+    //ObjectInputStream input;
     Socket s = null;
     boolean done = false;
     String serverAddress;
@@ -56,7 +57,7 @@ public class UserClient extends Thread{
                     throw new UnknownHostException();
                 }
                 s = new Socket(serverAddress, 9090);
-                input =new ObjectInputStream(s.getInputStream());
+                //input =new ObjectInputStream(s.getInputStream());
                 done = true;
             } catch (ConnectException e) {
                 gui.display("Wait for servor...");
@@ -69,18 +70,16 @@ public class UserClient extends Thread{
         
         while(true){
             try {
-                gui.setIcons((BufferedImage)input.readObject(),null);
-                System.out.println(input.readLine());
+                gui.setIcons(ImageIO.read(ImageIO.createImageInputStream(s.getInputStream())),null);
+                //System.out.println(input.readLine());
             } catch (IOException ex) {
-                Logger.getLogger(UserClient.class.getName()).log(Level.SEVERE, null, ex);
-            } catch (ClassNotFoundException ex) {
                 Logger.getLogger(UserClient.class.getName()).log(Level.SEVERE, null, ex);
             }
         }
     }
 
     public void close() throws IOException {
-        input.close();
+        //input.close();
         s.close();
     }
 }

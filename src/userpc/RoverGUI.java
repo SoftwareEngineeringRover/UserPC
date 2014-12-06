@@ -33,33 +33,13 @@ public class RoverGUI extends javax.swing.JFrame {
     /**
      * Creates new form RoverGUI
      */
-    //Webcam webcam; //rover
-    //Webcam webcam2; //rover
+
     boolean camFlag = false;
 
     public RoverGUI() {
         initComponents();
     }
 
-//    class takeIamges extends Thread {
-//
-//        @Override
-//        public void run() {
-//            while (true) {
-//                try {
-//                    //needs to receive new image constantly
-//                    //Client.getImage or something
-//                    ImageIcon icon = new ImageIcon(img);  //img needed from communications
-//                    ImageIcon icon2 = new ImageIcon(img2);
-//                    jLabel1.setIcon(icon);
-//                    jLabel2.setIcon(icon2);
-//                    Thread.sleep(50);
-//                } catch (InterruptedException ex) {
-//                    Logger.getLogger(RoverGUI.class.getName()).log(Level.SEVERE, null, ex);
-//                }
-//            }
-//        }
-//    }
     public void setIcons(BufferedImage img1, BufferedImage img2) {
         ImageIcon icon = new ImageIcon(img1);
         ImageIcon icon2 = new ImageIcon(img2);
@@ -299,32 +279,6 @@ public class RoverGUI extends javax.swing.JFrame {
         } catch (IOException ex) {
             Logger.getLogger(RoverGUI.class.getName()).log(Level.SEVERE, null, ex);
         }
-    }
-
-    private void displayImage() {
-        try {
-            //List<Webcam> camList = Webcam.getWebcams(); //rover
-            //display(camList.size() + "");
-            //webcam = camList.get(0); //rover
-            //webcam2 = camList.get(1); //rover
-            //webcam.setViewSize(WebcamResolution.VGA.getSize());
-            //webcam2.setViewSize(WebcamResolution.VGA.getSize()); 
-
-            //webcam.open(); //rover
-            //webcam2.open(); //rover
-            //new takeIamges().start();
-            display("Camera activated!");
-            camFlag = true;
-        } catch (Exception e) {
-            display("Unable to display stream");
-        }
-    }
-
-    private void closeDisplayImage() {
-        //webcam.close();
-        //webcam2.close();
-        display("Camera deactivated");
-        camFlag = false;
     }
 
     private void stopControllersAndServer() {
