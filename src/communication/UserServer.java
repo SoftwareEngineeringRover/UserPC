@@ -1,12 +1,6 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package communication;
 
 import java.io.IOException;
-import java.io.ObjectOutputStream;
 import java.io.PrintWriter;
 import java.net.ServerSocket;
 import java.net.Socket;
@@ -17,8 +11,9 @@ import robotcontrollers.MotorControllers;
 import userpc.RoverGUI;
 
 /**
- *
- * @author junxin
+ * Creates a server to send camera and joystick data
+ * to the Rover client
+ * @author Jun,Ed,Matt,Dan,Dakota,Zhen
  */
 public class UserServer implements Runnable {
 
@@ -40,15 +35,19 @@ public class UserServer implements Runnable {
         }
     }
 
+    /**
+     * Starts the server and sends data constantly
+     */
     @Override
     public void run() {
         try {
             socket = listener.accept();
-            gui.display("Client accept");
+            gui.display("Client accepted");
             out =new PrintWriter(socket.getOutputStream(), true);
             while(true){
                 out.println(mc.getMotorData());
                 out.println(ac.getArmData());
+                out.println(gui.getcamData());
                 Thread.sleep(100);
             }
         } catch (IOException ex) {

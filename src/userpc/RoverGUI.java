@@ -7,21 +7,19 @@ package userpc;
 import communication.UserServer;
 import robotcontrollers.ArmControllers;
 import robotcontrollers.MotorControllers;
-
-import com.github.sarxos.webcam.*;
 import communication.UserClient;
 import java.awt.image.BufferedImage;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-
 import java.awt.*;
 import java.io.IOException;
-import java.util.List;
 import javax.swing.ImageIcon;
 
 /**
- *
- * @author Eddy
+ * This class creates a GUI for the user to view
+ * and switch between different cameras.  It also
+ * connects to the joystick and sends that data to the rover.
+ * @author Edward,Jun,Matt,Dan,Dakota,Zhen
  */
 public class RoverGUI extends javax.swing.JFrame {
 
@@ -29,6 +27,8 @@ public class RoverGUI extends javax.swing.JFrame {
     ArmControllers ac;
     Thread server;
     Thread client;
+    int camLeft = 0;
+    int camRight = 0;
 
     /**
      * Creates new form RoverGUI
@@ -36,24 +36,32 @@ public class RoverGUI extends javax.swing.JFrame {
 
     boolean camFlag = false;
 
+    /**
+     * Initializes the GUI 
+     */
     public RoverGUI() {
         initComponents();
     }
 
+    /**
+     * Resizes images acquired from rover and
+     * displays them on the GUI labels
+     * @param img1
+     * @param img2 
+     */
     public void setIcons(BufferedImage img1, BufferedImage img2) {
-   if(img1!=null)
-   {
+    if(img1!=null)
+    {
         Image newimg = img1.getScaledInstance(489, 489,  java.awt.Image.SCALE_SMOOTH);  
         ImageIcon icon = new ImageIcon(newimg);
-         jLabel1.setIcon(icon);
-   }
-   else
-   {Image newimg1 = img2.getScaledInstance(489, 489,  java.awt.Image.SCALE_SMOOTH);  
-        
+        jLabel1.setIcon(icon);
+    }
+    else
+    {
+        Image newimg1 = img2.getScaledInstance(489, 489,  java.awt.Image.SCALE_SMOOTH);
         ImageIcon icon2 = new ImageIcon(newimg1);
-       
         jLabel2.setIcon(icon2);
-      }
+    }
         pack();
     }
 
@@ -98,6 +106,11 @@ public class RoverGUI extends javax.swing.JFrame {
         jButton1.setText("Front");
         jButton1.setContentAreaFilled(false);
         jButton1.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        jButton1.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                jButton1MouseClicked(evt);
+            }
+        });
         jButton1.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jButton1ActionPerformed(evt);
@@ -109,72 +122,137 @@ public class RoverGUI extends javax.swing.JFrame {
         jButton2.setText("Rear");
         jButton2.setContentAreaFilled(false);
         jButton2.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        jButton2.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                jButton2MouseClicked(evt);
+            }
+        });
         getContentPane().add(jButton2, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 211, 90, 30));
 
         jButton3.setFont(new java.awt.Font("Calibri", 0, 11)); // NOI18N
         jButton3.setText("Tower");
         jButton3.setContentAreaFilled(false);
         jButton3.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        jButton3.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                jButton3MouseClicked(evt);
+            }
+        });
+        jButton3.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton3ActionPerformed(evt);
+            }
+        });
         getContentPane().add(jButton3, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 251, 90, 30));
 
         jButton4.setFont(new java.awt.Font("Calibri", 0, 11)); // NOI18N
         jButton4.setText("Left");
         jButton4.setContentAreaFilled(false);
         jButton4.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        jButton4.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                jButton4MouseClicked(evt);
+            }
+        });
         getContentPane().add(jButton4, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 291, 90, 30));
 
         jButton5.setFont(new java.awt.Font("Calibri", 0, 11)); // NOI18N
         jButton5.setText("Right");
         jButton5.setContentAreaFilled(false);
         jButton5.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        jButton5.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                jButton5MouseClicked(evt);
+            }
+        });
         getContentPane().add(jButton5, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 331, 90, 30));
 
         jButton6.setFont(new java.awt.Font("Calibri", 0, 11)); // NOI18N
         jButton6.setText("Front Left");
         jButton6.setContentAreaFilled(false);
         jButton6.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        jButton6.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                jButton6MouseClicked(evt);
+            }
+        });
         getContentPane().add(jButton6, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 373, 90, 30));
 
         jButton7.setFont(new java.awt.Font("Calibri", 0, 11)); // NOI18N
         jButton7.setText("Front Right");
         jButton7.setContentAreaFilled(false);
         jButton7.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        jButton7.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                jButton7MouseClicked(evt);
+            }
+        });
         getContentPane().add(jButton7, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 415, 90, 30));
 
         jButton8.setFont(new java.awt.Font("Calibri", 0, 11)); // NOI18N
         jButton8.setText("Rear Tower");
         jButton8.setContentAreaFilled(false);
         jButton8.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        jButton8.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                jButton8MouseClicked(evt);
+            }
+        });
         getContentPane().add(jButton8, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 455, 90, 30));
 
         jButton10.setFont(new java.awt.Font("Calibri", 0, 11)); // NOI18N
         jButton10.setText("Rear");
         jButton10.setContentAreaFilled(false);
         jButton10.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        jButton10.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                jButton10MouseClicked(evt);
+            }
+        });
         getContentPane().add(jButton10, new org.netbeans.lib.awtextra.AbsoluteConstraints(1180, 210, 90, 30));
 
         jButton11.setFont(new java.awt.Font("Calibri", 0, 11)); // NOI18N
         jButton11.setText("Tower");
         jButton11.setContentAreaFilled(false);
         jButton11.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        jButton11.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                jButton11MouseClicked(evt);
+            }
+        });
         getContentPane().add(jButton11, new org.netbeans.lib.awtextra.AbsoluteConstraints(1180, 252, 90, 30));
 
         jButton12.setFont(new java.awt.Font("Calibri", 0, 11)); // NOI18N
         jButton12.setText("Left");
         jButton12.setContentAreaFilled(false);
         jButton12.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        jButton12.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                jButton12MouseClicked(evt);
+            }
+        });
         getContentPane().add(jButton12, new org.netbeans.lib.awtextra.AbsoluteConstraints(1180, 293, 90, 30));
 
         jButton13.setFont(new java.awt.Font("Calibri", 0, 11)); // NOI18N
         jButton13.setText("Right");
         jButton13.setContentAreaFilled(false);
         jButton13.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        jButton13.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                jButton13MouseClicked(evt);
+            }
+        });
         getContentPane().add(jButton13, new org.netbeans.lib.awtextra.AbsoluteConstraints(1180, 333, 90, 30));
 
         jButton14.setFont(new java.awt.Font("Calibri", 0, 11)); // NOI18N
         jButton14.setText("Front Left");
         jButton14.setContentAreaFilled(false);
         jButton14.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        jButton14.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                jButton14MouseClicked(evt);
+            }
+        });
         getContentPane().add(jButton14, new org.netbeans.lib.awtextra.AbsoluteConstraints(1180, 373, 90, 30));
 
         jButton9.setFont(new java.awt.Font("Calibri", 0, 11)); // NOI18N
@@ -183,18 +261,38 @@ public class RoverGUI extends javax.swing.JFrame {
         jButton9.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
         jButton9.setMaximumSize(new java.awt.Dimension(87, 25));
         jButton9.setMinimumSize(new java.awt.Dimension(87, 25));
+        jButton9.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                jButton9MouseClicked(evt);
+            }
+        });
         getContentPane().add(jButton9, new org.netbeans.lib.awtextra.AbsoluteConstraints(1180, 170, 90, 30));
 
         jButton15.setFont(new java.awt.Font("Calibri", 0, 11)); // NOI18N
         jButton15.setText("Front Right");
         jButton15.setContentAreaFilled(false);
         jButton15.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        jButton15.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                jButton15MouseClicked(evt);
+            }
+        });
         getContentPane().add(jButton15, new org.netbeans.lib.awtextra.AbsoluteConstraints(1180, 414, 90, 30));
 
         jButton16.setFont(new java.awt.Font("Calibri", 0, 11)); // NOI18N
         jButton16.setText("Rear Tower");
         jButton16.setContentAreaFilled(false);
         jButton16.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        jButton16.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                jButton16MouseClicked(evt);
+            }
+        });
+        jButton16.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyPressed(java.awt.event.KeyEvent evt) {
+                jButton16KeyPressed(evt);
+            }
+        });
         getContentPane().add(jButton16, new org.netbeans.lib.awtextra.AbsoluteConstraints(1180, 454, 90, 30));
 
         GuessButton.setFont(new java.awt.Font("Calibri", 0, 24)); // NOI18N
@@ -224,23 +322,121 @@ public class RoverGUI extends javax.swing.JFrame {
         setLocationRelativeTo(null);
     }// </editor-fold>//GEN-END:initComponents
 
+    /**
+     * Clicking this button starts the joystick, server, and client
+     * Clicking again stops the joystick, server, and client
+     * @param evt 
+     */
     private void GuessButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_GuessButtonActionPerformed
         if (camFlag == false) {
             startControllersAndServer();
             connectRoverServer();
-           // displayImage();
             camFlag = true;
         } else {
             stopControllersAndServer();
-            //closeDisplayImage();
             camFlag = false;
         }
     }//GEN-LAST:event_GuessButtonActionPerformed
 
+    /**
+     * The following methods cause each associated button
+     * to change what camera is being viewed and display it
+     * @param evt 
+     */
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_jButton1ActionPerformed
 
+    private void jButton1MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jButton1MouseClicked
+        camLeft = 0;
+        jTextArea1.append("Left Screen: Front Camera Activated \n");
+    }//GEN-LAST:event_jButton1MouseClicked
+
+    private void jButton2MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jButton2MouseClicked
+        camLeft = 1;
+        jTextArea1.append("Left Screen: Rear Camera Activated \n");
+    }//GEN-LAST:event_jButton2MouseClicked
+
+    private void jButton3MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jButton3MouseClicked
+        camLeft = 2;
+        jTextArea1.append("Left Screen: Tower Camera Activated \n");
+    }//GEN-LAST:event_jButton3MouseClicked
+
+    private void jButton3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton3ActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_jButton3ActionPerformed
+
+    private void jButton4MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jButton4MouseClicked
+        camLeft = 3;
+        jTextArea1.append("Left Screen: Left Camera Activated \n");
+    }//GEN-LAST:event_jButton4MouseClicked
+
+    private void jButton5MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jButton5MouseClicked
+        camLeft = 4;
+        jTextArea1.append("Left Screen: Right Camera Activated \n");
+    }//GEN-LAST:event_jButton5MouseClicked
+
+    private void jButton6MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jButton6MouseClicked
+        camLeft = 5;
+        jTextArea1.append("Left Screen: Front Left Camera Activated \n");
+    }//GEN-LAST:event_jButton6MouseClicked
+
+    private void jButton7MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jButton7MouseClicked
+        camLeft = 6;
+        jTextArea1.append("Left Screen: Front Right Camera Activated \n");
+    }//GEN-LAST:event_jButton7MouseClicked
+
+    private void jButton8MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jButton8MouseClicked
+        camLeft = 7;
+        jTextArea1.append("Left Screen: Rear Tower Camera Activated \n");
+    }//GEN-LAST:event_jButton8MouseClicked
+
+    private void jButton9MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jButton9MouseClicked
+        camRight = 0;
+        jTextArea1.append("Right Screen: Front Camera Activated \n");
+    }//GEN-LAST:event_jButton9MouseClicked
+
+    private void jButton10MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jButton10MouseClicked
+        camRight = 1;
+        jTextArea1.append("Right Screen: Rear Camera Activated \n");
+    }//GEN-LAST:event_jButton10MouseClicked
+
+    private void jButton11MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jButton11MouseClicked
+        camRight = 2;
+        jTextArea1.append("Right Screen: Tower Camera Activated \n");
+    }//GEN-LAST:event_jButton11MouseClicked
+
+    private void jButton12MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jButton12MouseClicked
+        camRight = 3;
+        jTextArea1.append("Right Screen: Left Camera Activated \n");
+    }//GEN-LAST:event_jButton12MouseClicked
+
+    private void jButton13MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jButton13MouseClicked
+        camRight = 4;
+        jTextArea1.append("Right Screen: Right Camera Activated \n");
+    }//GEN-LAST:event_jButton13MouseClicked
+
+    private void jButton14MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jButton14MouseClicked
+        camRight = 5;
+        jTextArea1.append("Right Screen: Front Left Camera Activated \n");
+    }//GEN-LAST:event_jButton14MouseClicked
+
+    private void jButton15MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jButton15MouseClicked
+        camRight = 6;
+        jTextArea1.append("Right Screen: Front Right Camera Activated \n");
+    }//GEN-LAST:event_jButton15MouseClicked
+
+    private void jButton16KeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_jButton16KeyPressed
+        
+    }//GEN-LAST:event_jButton16KeyPressed
+
+    private void jButton16MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jButton16MouseClicked
+        camRight = 7;
+        jTextArea1.append("Right Screen: Rear Tower Camera Activated \n");
+    }//GEN-LAST:event_jButton16MouseClicked
+
+    
+    
     /**
      * @param args the command line arguments
      */
@@ -278,10 +474,18 @@ public class RoverGUI extends javax.swing.JFrame {
 
     }
 
+    /**
+     * Displays a message on the text area
+     * @param message 
+     */
     public void display(String message) {
         jTextArea1.append(message + "\n");
     }
 
+    /**
+     * Starts User client and connects to Rover
+     * server with given IP address
+     */
     private void connectRoverServer() {
         try {
             client = new UserClient(this, "150.250.218.175");
@@ -290,13 +494,29 @@ public class RoverGUI extends javax.swing.JFrame {
             Logger.getLogger(RoverGUI.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
+    
+    /**
+     * Returns what cameras to be displayed
+     * Used by User server and sent to Rover Client.
+     * @return 
+     */
+    public String getcamData()
+    {
+        return 2 + " " + camLeft + " " + camRight;
+    }
 
+    /**
+     * Disconnects the server
+     */
     private void stopControllersAndServer() {
         server.stop();
         GuessButton.setText("Connnect");
-        display("Server Disconnect!");
+        display("Server Disconnected!");
     }
 
+    /**
+     * Starts the joystick server
+     */
     private void startControllersAndServer() {
         mc = new MotorControllers(-1);
         if (mc.searchForControllers()) {
@@ -307,13 +527,13 @@ public class RoverGUI extends javax.swing.JFrame {
                 server = new Thread(new UserServer(this, mc, ac));
                 server.start();
                 display("Server start...");
-                display("Wait for client...");
+                display("Waiting for client...");
                 GuessButton.setText("Disconnect");
             } else {
-                display("Not Extra Joystick For Arm Controller!");
+                display("Arm Controller Joystick not found!");
             }
         } else {
-            display("Not Extra Joystick For Motor Controller!");
+            display("Motor Controller Joystick not found!");
         }
     }
 

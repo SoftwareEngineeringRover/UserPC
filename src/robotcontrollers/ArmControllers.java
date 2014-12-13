@@ -1,13 +1,8 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package robotcontrollers;
 
 /**
- *
- * @author junxnhe
+ * Decides what joystick movements will do
+ * @author Jun
  */
 public class ArmControllers extends RobotControllers {
 
@@ -23,6 +18,11 @@ public class ArmControllers extends RobotControllers {
         super(avoidIndex);
     }
     
+    /**
+     * Gets information from joystick
+     * @return
+     * @throws NullPointerException 
+     */
     public String getArmData()throws NullPointerException{
         super.getData();
         jointSwitch();
@@ -34,8 +34,9 @@ public class ArmControllers extends RobotControllers {
         return 1+" "+target+" "+Movement+" "+Rotation+" "+crow;
     }
 
-    //shoulder, elbow, wrist
-    //switch from shoulder, elbow, wrist
+    /**
+     * Switches Arm joints between shoulder, elbow and wrist
+     */
     private void jointSwitch() {
         if (buttons[4] || buttons[5] || buttons[6]) {
             if (buttons[4]) {
@@ -53,6 +54,10 @@ public class ArmControllers extends RobotControllers {
         }
     }
 
+    /**
+     * Gets the speed position from joystick and converts
+     * it to more usable numbers
+     */
     private void getMovement() {
         int y = -(int) (yAxis * 1000);
         if (y == 0) {
@@ -64,6 +69,10 @@ public class ArmControllers extends RobotControllers {
         }
     }
 
+    /**
+     * Gets the rotation position from joystick and converts it
+     * to more usable numbers
+     */
     private void getRotation() {
         int z = (int) (zRotation * 1000);
         if (z == 0) {

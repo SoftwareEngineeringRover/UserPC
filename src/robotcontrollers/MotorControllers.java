@@ -1,13 +1,8 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package robotcontrollers;
 
 /**
- *
- * @author junxnhe
+ * Grabs motor controller data from the joystick
+ * @author Jun
  */
 public class MotorControllers extends RobotControllers {
 
@@ -20,6 +15,12 @@ public class MotorControllers extends RobotControllers {
         super(avoidIndex);
     }
 
+    /**
+     * Gets motor data from this class to send out for other 
+     * classes to see
+     * @return
+     * @throws NullPointerException 
+     */
     public String getMotorData() throws NullPointerException {
         super.getData();
         getSpeed();
@@ -27,11 +28,16 @@ public class MotorControllers extends RobotControllers {
         return 0 + " " + speed + " " + degree;
     }
 
+    /**
+     * Gets the speed to send to robot
+     */
     private void getSpeed() {
         speed = (int) (zAxis * maxSpeed);
-        //send to robot
     }
 
+    /**
+     * gets the rotation to send to robot
+     */
     private void getRotation() {
         degree = (int) Math.toDegrees(Math.atan2(-yAxis, xAxis));
         if (degree < -90) {
@@ -39,6 +45,5 @@ public class MotorControllers extends RobotControllers {
         } else {
             degree -= 90;
         }
-        //send to robot
     }
 }

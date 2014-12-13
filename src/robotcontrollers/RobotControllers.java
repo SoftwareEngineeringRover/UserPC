@@ -1,18 +1,12 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package robotcontrollers;
 
 import net.java.games.input.Component;
 import net.java.games.input.Controller;
 import net.java.games.input.ControllerEnvironment;
-import net.java.games.input.*;
 
 /**
- *
- * @author junxnhe
+ * Gets all data from joystick
+ * @author Jun
  */
 public class RobotControllers {
 
@@ -32,7 +26,10 @@ public class RobotControllers {
         buttons = new boolean[13];
     }
 
-    //search controller
+    /**
+     * Searches for joystick(s) and connects to it/them
+     * @return 
+     */
     public boolean searchForControllers() {
         //collect ports infor
         controllers = null;
@@ -48,21 +45,34 @@ public class RobotControllers {
         return isEmpty();
     }
     
+    /**
+     * Sets the avoidance index
+     * @param index 
+     */
     public void setAvoidIndex(int index) {
         avoidIndex = index;
     }
 
-    //get port index
+    /**
+     * Gets the port index
+     * @return 
+     */
     public int getIndex() {
         return joystickIndex;
     }
 
-    //check if joystick is empty
+    /**
+     * Checks if the joystick is empty
+     * @return 
+     */
     public boolean isEmpty() {
         return joystickIndex != -1;
     }
 
-    //get input from joystick
+    /**
+     * Gets input from joystick
+     * @throws NullPointerException 
+     */
     public void getData() throws NullPointerException{
         joystick.poll();
         Component[] components = joystick.getComponents();
@@ -92,15 +102,11 @@ public class RobotControllers {
                     }
             }
         }
-        
-        
         //let system have a little, slow the busy processing
         try {
             Thread.sleep(20);
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
-        
-        //System.out.println(xAxis);
     }
 }
