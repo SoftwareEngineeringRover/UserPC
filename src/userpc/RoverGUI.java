@@ -45,6 +45,7 @@ public class RoverGUI extends javax.swing.JFrame {
         ImageIcon icon2 = new ImageIcon(img2);
         jLabel1.setIcon(icon);
         jLabel2.setIcon(icon2);
+        pack();
     }
 
     /**
