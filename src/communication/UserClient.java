@@ -70,7 +70,8 @@ public class UserClient extends Thread{
         
         while(true){
             try {
-                gui.setIcons(ImageIO.read(ImageIO.createImageInputStream(s.getInputStream())),null);
+                BufferedImage io = ImageIO.read(ImageIO.createImageInputStream(s.getInputStream()));
+                gui.setIcons(io,io);
                 //System.out.println(input.readLine());
             } catch (IOException ex) {
                 Logger.getLogger(UserClient.class.getName()).log(Level.SEVERE, null, ex);
