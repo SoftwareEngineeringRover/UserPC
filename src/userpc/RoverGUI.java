@@ -41,10 +41,19 @@ public class RoverGUI extends javax.swing.JFrame {
     }
 
     public void setIcons(BufferedImage img1, BufferedImage img2) {
-        ImageIcon icon = new ImageIcon(img1);
-        ImageIcon icon2 = new ImageIcon(img2);
-        jLabel1.setIcon(icon);
+   if(img1!=null)
+   {
+        Image newimg = img1.getScaledInstance(489, 489,  java.awt.Image.SCALE_SMOOTH);  
+        ImageIcon icon = new ImageIcon(newimg);
+         jLabel1.setIcon(icon);
+   }
+   else
+   {Image newimg1 = img2.getScaledInstance(489, 489,  java.awt.Image.SCALE_SMOOTH);  
+        
+        ImageIcon icon2 = new ImageIcon(newimg1);
+       
         jLabel2.setIcon(icon2);
+      }
         pack();
     }
 
