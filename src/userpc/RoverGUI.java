@@ -29,12 +29,11 @@ public class RoverGUI extends javax.swing.JFrame {
     Thread client;
     int camLeft = 0;
     int camRight = 0;
-
+    boolean camFlag = false;
     /**
      * Creates new form RoverGUI
      */
 
-    boolean camFlag = false;
 
     /**
      * Initializes the GUI 
@@ -333,7 +332,11 @@ public class RoverGUI extends javax.swing.JFrame {
             connectRoverServer();
             camFlag = true;
         } else {
-            stopControllersAndServer();
+            try {
+                stopControllersAndServer();
+            } catch (IOException ex) {
+                Logger.getLogger(RoverGUI.class.getName()).log(Level.SEVERE, null, ex);
+            }
             camFlag = false;
         }
     }//GEN-LAST:event_GuessButtonActionPerformed
@@ -488,7 +491,7 @@ public class RoverGUI extends javax.swing.JFrame {
      */
     private void connectRoverServer() {
         try {
-            client = new UserClient(this, "150.250.218.175");
+            client = new UserClient(this, "150.250.219.61");
             client.start();
         } catch (IOException ex) {
             Logger.getLogger(RoverGUI.class.getName()).log(Level.SEVERE, null, ex);
@@ -508,12 +511,12 @@ public class RoverGUI extends javax.swing.JFrame {
     /**
      * Disconnects the server
      */
-    private void stopControllersAndServer() {
-        server.stop();
+    private void stopControllersAndServer() throws IOException {
+        server.interrupt();
         GuessButton.setText("Connnect");
         display("Server Disconnected!");
     }
-
+    
     /**
      * Starts the joystick server
      */
