@@ -27,9 +27,9 @@ public class ArmControllers extends RobotControllers {
         super.getData();
         jointSwitch();
         crow=buttons[0];
-        getMovement();
+        setMovement();
         if (rotation) {
-            getRotation();
+            setRotation();
         }
         return 1+" "+target+" "+Movement+" "+Rotation+" "+crow;
     }
@@ -58,7 +58,7 @@ public class ArmControllers extends RobotControllers {
      * Gets the speed position from joystick and converts
      * it to more usable numbers
      */
-    private void getMovement() {
+    private void setMovement() {
         int y = -(int) (yAxis * 1000);
         if (y == 0) {
             Movement = "stop";
@@ -73,7 +73,7 @@ public class ArmControllers extends RobotControllers {
      * Gets the rotation position from joystick and converts it
      * to more usable numbers
      */
-    private void getRotation() {
+    private void setRotation() {
         int z = (int) (zRotation * 1000);
         if (z == 0) {
             Rotation = "stop";

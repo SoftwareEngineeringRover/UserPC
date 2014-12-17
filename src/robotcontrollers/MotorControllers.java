@@ -23,22 +23,22 @@ public class MotorControllers extends RobotControllers {
      */
     public String getMotorData() throws NullPointerException {
         super.getData();
-        getSpeed();
-        getRotation();
+        setSpeed();
+        setRotation();
         return 0 + " " + speed + " " + degree;
     }
 
     /**
      * Gets the speed to send to robot
      */
-    private void getSpeed() {
+    private void setSpeed() {
         speed = (int) (zAxis * maxSpeed);
     }
 
     /**
      * gets the rotation to send to robot
      */
-    private void getRotation() {
+    private void setRotation() {
         degree = (int) Math.toDegrees(Math.atan2(-yAxis, xAxis));
         if (degree < -90) {
             degree += 270;
