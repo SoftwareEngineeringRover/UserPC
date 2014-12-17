@@ -14,6 +14,7 @@ import java.util.logging.Logger;
 import java.awt.*;
 import java.io.IOException;
 import javax.swing.ImageIcon;
+import javax.swing.JOptionPane;
 
 /**
  * This class creates a GUI for the user to view
@@ -491,7 +492,9 @@ public class RoverGUI extends javax.swing.JFrame {
      */
     private void connectRoverServer() {
         try {
-            client = new UserClient(this, "150.250.219.61");
+            String ipAddress = JOptionPane.showInputDialog(null,
+                    "Please enter server IP", "150.250.219.61");
+            client = new UserClient(this, ipAddress);
             client.start();
         } catch (IOException ex) {
             Logger.getLogger(RoverGUI.class.getName()).log(Level.SEVERE, null, ex);
